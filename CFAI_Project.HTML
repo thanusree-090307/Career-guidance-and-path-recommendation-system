@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Career Guidance System</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<style>
+    body{
+    font-family: Arial;
+    margin:0;
+    background:#f4f4f4;
+}
+
+header{
+    background:#2c3e50;
+    color:white;
+    text-align:center;
+    padding:20px;
+}
+
+.container{
+    width:80%;
+    margin:auto;
+    margin-top:20px;
+}
+
+.menu{
+    text-align:center;
+}
+
+button{
+    padding:10px;
+    margin:5px;
+    cursor:pointer;
+}
+
+section{
+    background:white;
+    padding:20px;
+    margin-top:20px;
+    border-radius:8px;
+}
+
+.hidden{
+    display:none;
+}
+
+input,select{
+    display:block;
+    width:300px;
+    padding:8px;
+    margin:10px 0;
+}
+</style>
+    <header>
+        <h1>Career Guidance & Path Recommendation System</h1>
+    </header>
+
+    <div class="container">
+
+        <div class="menu">
+            <button onclick="showSection('add')">Add Career</button>
+            <button onclick="showSection('view')">View Careers</button>
+            <button onclick="showSection('search')">Search Career</button>
+            <button onclick="showSection('recommend')">Recommendation</button>
+            <button onclick="sortCareers()">Sort Careers</button>
+            <button onclick="showSection('compare')">Compare Search</button>
+            <button onclick="showSection('bfs')">Career Path</button>
+        </div>
+
+        <!-- Add Career -->
+        <section id="add" class="hidden">
+            <h2>Add Career</h2>
+            <input id="careerName" placeholder="Career Name">
+            <input id="skill" placeholder="Skill">
+            <input id="interest" placeholder="Interest">
+            <input id="description" placeholder="Description">
+            <button onclick="addCareer()">Add</button>
+        </section>
+
+        <!-- View Careers -->
+        <section id="view" class="hidden">
+            <h2>Available Careers</h2>
+            <div id="careerList"></div>
+        </section>
+
+        <!-- Search -->
+        <section id="search" class="hidden">
+            <h2>Search Career</h2>
+            <input id="searchInput" placeholder="Enter Career Name">
+            <button onclick="linearSearch()">Linear Search</button>
+            <button onclick="binarySearch()">Binary Search</button>
+            <div id="searchResult"></div>
+        </section>
+
+        <!-- Recommendation -->
+        <section id="recommend" class="hidden">
+            <h2>Career Recommendation</h2>
+            <input id="recSkill" placeholder="Enter Skill">
+            <input id="recInterest" placeholder="Enter Interest">
+            <button onclick="recommendCareer()">Recommend</button>
+            <div id="recommendResult"></div>
+        </section>
+
+        <!-- Compare -->
+        <section id="compare" class="hidden">
+            <h2>Compare Search Algorithms</h2>
+            <input id="compareInput" placeholder="Enter Career Name">
+            <button onclick="compareSearch()">Compare</button>
+            <div id="compareResult"></div>
+        </section>
+
+        <!-- BFS -->
+        <section id="bfs" class="hidden">
+            <h2>Career Path Finder (BFS)</h2>
+            <select id="careerSelect">
+                <option>Web Developer</option>
+                <option>Software Developer</option>
+                <option>Data Analyst</option>
+            </select>
+            <button onclick="findPath()">Find Path</button>
+            <div id="pathResult"></div>
+        </section>
+
+    </div>
+
+<script src="script.js"></script>
+</body>
+<script>
+    let careers = [
+    {
+        name:"Software Developer",
+        skill:"Java",
+        interest:"Programming",
+        description:"Develops software applications"
+    },
+    {
+        name:"Data Analyst",
+        skill:"Statistics",
+        interest:"Analytics",
+        description:"Analyzes and interprets data"
+    },
+    {
+        name:"Web Developer",
+        skill:"HTML",
+        interest:"Web Development",
+        description:"Builds websites"
+    }
+];
+
+function showSection(id){
+    let sections = document.querySelectorAll("section");
+
+    sections.forEach(sec=>{
+        sec.classList.add("hidden");
+    });
+
+    document.getElementById(id).classList.remove("hidden");
+}
+</script>
+</html>
