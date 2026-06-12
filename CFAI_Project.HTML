@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Career Guidance System</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<style>
+    body{
+    font-family: Arial;
+    background:#f5f5f5;
+    margin:0;
+}
+
+header{
+    background:#34495e;
+    color:white;
+    padding:20px;
+    text-align:center;
+}
+
+.menu{
+    text-align:center;
+    margin:20px;
+}
+
+button{
+    padding:10px;
+    margin:5px;
+    cursor:pointer;
+}
+
+.section{
+    width:50%;
+    margin:auto;
+    background:white;
+    padding:20px;
+    margin-top:20px;
+}
+
+.hidden{
+    display:none;
+}
+
+input,select{
+    width:100%;
+    padding:10px;
+    margin:8px 0;
+}
+
+#careerList{
+    width:60%;
+    margin:auto;
+    margin-top:20px;
+}
+</style>
+<body>
+
+<header>
+    <h1>Career Guidance & Path Recommendation System</h1>
+</header>
+
+<div class="menu">
+    <button onclick="show('add')">Add Career</button>
+    <button onclick="viewCareers()">View Careers</button>
+    <button onclick="show('search')">Search Career</button>
+    <button onclick="show('recommend')">Recommendation</button>
+    <button onclick="sortCareers()">Sort Careers</button>
+    <button onclick="show('compare')">Compare Search</button>
+    <button onclick="show('path')">Career Path</button>
+</div>
+
+<!-- Add Career -->
+<div id="add" class="section hidden">
+    <h2>Add Career</h2>
+    <input id="name" placeholder="Career Name">
+    <input id="skill" placeholder="Skill">
+    <input id="interest" placeholder="Interest">
+    <input id="description" placeholder="Description">
+    <button onclick="addCareer()">Add</button>
+</div>
+
+<!-- Search -->
+<div id="search" class="section hidden">
+    <h2>Search Career</h2>
+    <input id="searchInput" placeholder="Career Name">
+    <button onclick="linearSearch()">Linear Search</button>
+    <button onclick="binarySearch()">Binary Search</button>
+    <p id="searchResult"></p>
+</div>
+
+<!-- Recommendation -->
+<div id="recommend" class="section hidden">
+    <h2>Recommendation</h2>
+    <input id="recSkill" placeholder="Skill">
+    <input id="recInterest" placeholder="Interest">
+    <button onclick="recommendCareer()">Recommend</button>
+    <p id="recommendResult"></p>
+</div>
+
+<!-- Compare -->
+<div id="compare" class="section hidden">
+    <h2>Compare Search Algorithms</h2>
+    <input id="compareInput" placeholder="Career Name">
+    <button onclick="compareSearch()">Compare</button>
+    <p id="compareResult"></p>
+</div>
+
+<!-- BFS -->
+<div id="path" class="section hidden">
+    <h2>Career Path Finder</h2>
+    <select id="careerPath">
+        <option>Web Developer</option>
+        <option>Software Developer</option>
+        <option>Data Analyst</option>
+    </select>
+    <button onclick="findPath()">Find Path</button>
+    <p id="pathResult"></p>
+</div>
+
+<!-- Output -->
+<div id="careerList"></div>
+
+<script src="script.js"></script>
+</body>
+<script>
+    let careers = [
+{
+name:"Software Developer",
+skill:"Java",
+interest:"Programming",
+description:"Develops software applications"
+},
+
+{
+name:"Data Analyst",
+skill:"Statistics",
+interest:"Analytics",
+description:"Analyzes data"
+},
+
+{
+name:"Web Developer",
+skill:"HTML",
+interest:"Web Development",
+description:"Builds websites"
+}
+];
+
+function show(id)
+{
+    let sections=document.querySelectorAll(".section");
+
+    sections.forEach(sec=>{
+        sec.classList.add("hidden");
+    });
+
+    document.getElementById(id).classList.remove("hidden");
+}
+
+/* Add Career */
+
+function addCareer()
+{
+    let name=document.getElementById("name").value;
+    let skill=document.getElementById("skill").value;
+    let interest=document.getElementById("interest").value;
+    let description=document.getElementById("description").value;
+
+    careers.push({name,skill,interest,description});
+
+    alert("Career Added Successfully");
+}
+
+/* View Career */
+
+function viewCareers()
+{
+    let output="";
+
+    careers.forEach(c=>{
+        output+=`
+        <p>
+        <b>${c.name}</b><br>
+        Skill:${c.skill}<br>
+        Interest:${c.interest}<br>
+        ${c.description}
+        </p><hr>`;
+    });
+
+    document.getElementById("careerList").innerHTML=output;
+}
+
+/* Linear Search */
+
+function linearSearch()
+{
+    let target=document.getElementById("searchInput").value;
+
+    let found=careers.find(c =>
+        c.name.toLowerCase()===target.toLowerCase()
+    );
+
+    document.getElementById("searchResult").innerHTML=
+    found ? "Career Found" : "Career Not Found";
+}
+
+/* Sort Careers */
+
+function sortCareers()
+{
+    careers.sort((a,b)=>
+        a.name.localeCompare(b.name)
+    );
+
+    alert("Careers Sorted Successfully");
+}
+
+/* Binary Search */
+
+function binarySearch()
+{
+    let target=document.getElementById("searchInput").value;
+
+    let low=0;
+    let high=careers.length-1;
+
+    while(low<=high)
+    {
+        let mid=Math.floor((low+high)/2);
+
+        let result=
+        careers[mid].name.localeCompare(target);
+
+        if(result===0)
+        {
+            document.getElementById("searchResult")
+            .innerHTML="Career Found";
+            return;
+        }
+
+        if(result<0)
+            low=mid+1;
+        else
+            high=mid-1;
+    }
+
+    document.getElementById("searchResult")
+    .innerHTML="Career Not Found";
+}
+
+/* Recommendation */
+
+function recommendCareer()
+{
+    let skill=document.getElementById("recSkill")
+               .value.toLowerCase();
+
+    let interest=document.getElementById("recInterest")
+                  .value.toLowerCase();
+
+    let result=
+    careers.find(c =>
+        c.skill.toLowerCase()===skill &&
+        c.interest.toLowerCase()===interest
+    );
+
+    document.getElementById("recommendResult")
+    .innerHTML=
+    result ? "Recommended: "+result.name
+           : "No Suitable Career Found";
+}
+
+/* Compare */
+
+function compareSearch()
+{
+    let target=
+    document.getElementById("compareInput").value;
+
+    let start1=performance.now();
+    careers.find(c=>c.name===target);
+    let end1=performance.now();
+
+    let start2=performance.now();
+    binarySearch();
+    let end2=performance.now();
+
+    document.getElementById("compareResult")
+    .innerHTML=
+    "Linear Search: "+
+    (end1-start1).toFixed(5)+" ms <br>"+
+    "Binary Search: "+
+    (end2-start2).toFixed(5)+" ms";
+}
+
+/* BFS */
+
+function findPath()
+{
+    let start=
+    document.getElementById("careerPath").value;
+
+    let paths={
+        "Web Developer":
+            ["Web Developer",
+             "Software Developer",
+             "AI Engineer"],
+
+        "Software Developer":
+            ["Software Developer",
+             "AI Engineer"],
+
+        "Data Analyst":
+            ["Data Analyst",
+             "Data Engineer",
+             "AI Engineer"]
+    };
+
+    document.getElementById("pathResult")
+    .innerHTML=
+    paths[start].join(" → ");
+}
+</script>
+</html>
